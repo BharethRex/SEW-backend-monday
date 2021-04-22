@@ -1,24 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Magic</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous"
+    ></script>
     <script>
-        //custom script
-        // let queryurl ='http://...../filler';
-        let queryurl = "http://localhost:3000/basic/data?companyId=9999999991&audienceCount=0"
-        function magic(){
-            $.get(queryurl, (data) =>{
-                $('#http_response').text(JSON.stringify(data,null,4))
-            });
-            //login(data).then(result=>console.log(result)).catch(err=>console.log(err));
-        }
+      //custom script
+      // let queryurl ='http://...../filler';
+      let queryurl = "http://localhost:3000/basic/data?companyId=9999999991&audienceCount=0"
+      function magic(){
+          $.get(queryurl, (data) =>{
+              $('#http_response').text(JSON.stringify(data,null,4))
+          });
+          //login(data).then(result=>console.log(result)).catch(err=>console.log(err));
+      }
+
+      function getData(companyId, audienceCount) {
+          var URL = "http://localhost:3000/basic/data?companyId=" + companyId + "&audienceCount=" + audienceCount;
+     
+          var settings = {
+              "url" : URL,
+              "method" : "GET",
+              "headers" : {
+                  "Content-type": " application/x-www-urlencoded"
+              }};
+
+      $.ajax(settings)
+        .done(function (response){
+          console.log("Successfully selected options");
+          console.log(response);
+
+          if (response.length > 0){
+          // Adding option to data viewing table
+            for (i = 0; i < response.length ; i++) {
+              var optionHtml = `
+              <tr class="options">
+                    <td class= "col_optionId">${response[i].optionId}</td>
+                    <td class= "col_companyId">${response[i].companyId}</td>
+                    <td class = "col_audienceCount">${response[i].audienceCount}</td>
+                    <td class = "col_cost">${response[i].cost}</td>
+              </tr>
+              `;
+              
+              $("#dataView").append(optionHtml);
+              
+            } 
+          }
+        })
+      };
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <button onclick="magic()">Click for Magic</button>
-    <pre id ="http_response"></pre>
-</body>
+    <pre id="http_response">
+
+    </pre>
+
+    <button onclick="getData(9999999991, 0)">Click for getData</button>
+    <pre>
+        <table id= "dataView">
+
+        </table>
+    </pre>
+  </body>
 </html>
