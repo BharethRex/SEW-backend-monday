@@ -23,8 +23,10 @@ function ObjToArray(obj) {
 
 
 // get options + filter
-advertDB.getOptions = function(companyId,audienceCount,callback){
+advertDB.getOptions = function(companyId,audienceCount, currPage, pageLimit, callback){
     var conn = db.getConnection();
+
+    var offsetNum = ((currPage - 1) * pageLimit);
 
     conn.connect((err)=>{
         if (err) {
@@ -58,9 +60,9 @@ advertDB.getOptions = function(companyId,audienceCount,callback){
                 });
             }
             else if (companyId == 0 && audienceCount == 0) {
-                var queryStmt = "SELECT * FROM advertisementOptions";
+                var queryStmt = "SELECT * FROM advertisementOptions limit " + pageLimit +  " offset " + offsetNum;
 
-                conn.query(queryStmt,[],(err,result)=>{
+                conn.query(queryStmt,[ ],(err,result)=>{
                     if (err) {
                         console.log("ERROR -- cannot get options");
                         return callback(err,null);

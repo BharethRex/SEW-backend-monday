@@ -8,6 +8,7 @@ var path = require("path");
 const advertDB = require("./model");
 
 var app = express();
+app.use(express.static(__dirname + '/public'));
 
 var urlencodedParser = bodyParser.urlencoded( {extended : false} );
 var jsonParser = bodyParser.json();
@@ -18,7 +19,7 @@ app.options("*", cors());
 app.use(cors());
 
 // simple route
-app.get("/test", (req, res) => {
+app.get("/alldata", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
     //res.json({ message: "Welcome to test application." });
   });
@@ -28,8 +29,10 @@ app.get("/test", (req, res) => {
 app.get("/basic/data",(req,res)=>{
     const companyId = req.query.companyId;
     const audienceCount = req.query.audienceCount;
+    const currPage = req.query.currPage;
+    const pageLimit = req.query.pageLimit;
 
-    advertDB.getOptions(companyId,audienceCount,(err,result)=>{
+    advertDB.getOptions(companyId, audienceCount, currPage, pageLimit, (err,result)=>{
         if (err) {
             res.status(500).send(err);
         }

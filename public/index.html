@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
     <title>Magic</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"
@@ -10,6 +11,11 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      var currpage, pagelimit, totalrow;
+
+      currpage = 2;
+      pagelimit = 5;
+
       //custom script
       // let queryurl ='http://...../filler';
       let queryurl = "http://localhost:3000/basic/data?companyId=9999999991&audienceCount=0"
@@ -20,8 +26,8 @@
           //login(data).then(result=>console.log(result)).catch(err=>console.log(err));
       }
 
-      function getData(companyId, audienceCount) {
-          var URL = "http://localhost:3000/basic/data?companyId=" + companyId + "&audienceCount=" + audienceCount;
+      function getData(companyId, audienceCount ,currpage ,pagelimit) {
+          var URL = "http://localhost:3000/basic/data?companyId=" + companyId + "&audienceCount=" + audienceCount + "&currPage=" + currpage + "&pageLimit=" + pagelimit;
      
           var settings = {
               "url" : URL,
@@ -61,7 +67,7 @@
 
     </pre>
 
-    <button onclick="getData(9999999991, 0)">Click for getData</button>
+    <button onclick="getData(0, 0, currpage, pagelimit)">Click for getData</button>
     <pre>
         <table id= "dataView">
 
