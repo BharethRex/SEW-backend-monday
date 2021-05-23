@@ -18,12 +18,13 @@ app.use(urlencodedParser);
 app.options("*", cors());
 app.use(cors());
 
+
 // simple route
 app.get("/alldata", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    //res.json({ message: "Welcome to test application." });
+    // res.json({ message: "Welcome to test application." });
   });
-  
+
 
 // basic dataviewer
 app.get("/basic/data",(req,res)=>{
@@ -31,6 +32,8 @@ app.get("/basic/data",(req,res)=>{
     const audienceCount = req.query.audienceCount;
     const currPage = req.query.currPage;
     const pageLimit = req.query.pageLimit;
+
+    console.log(companyId, audienceCount, currPage, pageLimit);
 
     advertDB.getOptions(companyId, audienceCount, currPage, pageLimit, (err,result)=>{
         if (err) {
